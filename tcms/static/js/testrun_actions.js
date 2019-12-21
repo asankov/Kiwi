@@ -82,13 +82,9 @@ Nitrate.TestRuns.Details.on_load = function() {
         }
       });
 
+      const currentStatusId = parseInt(c_container.find('input[name=status_id]').val())
       const submitButtons = c_container.find('.submit_button')
-      submitButtons.each((_index, b) => {
-        const submitButton = $(b)
-        const executionStatusId = submitButton.attr('statusId')
-
-        submitButton.bind('click', () => updateExecutionStatus(updateForm, executionId, caseId, executionStatusId));
-      })
+      bindSubmitButtons(currentStatusId, submitButtons, executionId, caseId)
 
       var rc_callback = function(e) {
         e.stopPropagation();
@@ -309,8 +305,29 @@ function updateExecutionStatus(updateForm, executionId, caseId, executionStatusP
     } else {
       fireEvent(link, 'click');
     }
+
+    const submitButtons = updateForm.find('.submit_button')
+
+    bindSubmitButtons(data.status_id, submitButtons, executionId, caseId)
   });
 };
+
+function bindSubmitButtons(currentStatusId, submitButtons, executionId, caseId) {
+  submitButtons.each((_index, b) => {
+    const submitButton = $(b)
+    const executionStatusId = parseInt(submitButton.attr('statusId'))
+
+    submitButton.unbind('click')
+
+    if (executionStatusId === currentStatusId) {
+      submitButton.css('opacity', '0.5')
+    } else {
+      submitButton.css('opacity', '1')
+      submitButton.bind('click', () => updateExecutionStatus(updateForm, executionId, caseId, executionStatusId))
+    }
+
+  })
+}
 
 function addComment(executionId, caseId, comment) {
   jsonRPC('TestExecution.add_comment', [executionId, comment], () => updateCommentsCount(caseId, true));

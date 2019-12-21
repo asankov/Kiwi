@@ -150,35 +150,6 @@ Nitrate.TestRuns.Details.on_load = function() {
       }
     });
   }
-  //bind click to status btn
-  jQ('.btn_status').live('click', function() {
-    var from = jQ(this).siblings('.btn_status:disabled')[0].title;
-    var to = this.title;
-    if (jQ('span#' + to + ' a').text() === '0') {
-      var htmlstr = "[<a href='javascript:void(0)' onclick=\"showCaseRunsWithSelectedStatus(jQ('#id_filter')[0], '"
-        + jQ(this).attr('crs_id')+"')\">0</a>]";
-      jQ('span#' + to).html(htmlstr);
-    }
-    if (jQ('span#' + from + ' a').text() === '1') {
-      jQ('span#' + from).html("[<a>1</a>]");
-    }
-    jQ('span#' + to + ' a').text(window.parseInt(jQ('span#' + to + ' a').text()) + 1);
-    jQ('span#' + from + ' a').text(window.parseInt(jQ('span#' + from + ' a').text()) - 1);
-
-    var caseRunCount = window.parseInt(jQ('span#TOTAL').next().text()) || 0;
-    var passedCaseRunCount = window.parseInt(jQ('span#PASSED a').text()) || 0;
-    var errorCaseRunCount = window.parseInt(jQ('span#ERROR a').text()) || 0;
-    var failedCaseRunCount = window.parseInt(jQ('span#FAILED a').text()) || 0;
-    var waivedCaseRunCount = window.parseInt(jQ('span#WAIVED a').text()) || 0;
-    var completePercent = 100 * ((passedCaseRunCount + errorCaseRunCount + failedCaseRunCount
-      + waivedCaseRunCount) / caseRunCount).toFixed(2);
-    var failedPercent = 100 * ((errorCaseRunCount + failedCaseRunCount) / (passedCaseRunCount
-      + errorCaseRunCount + failedCaseRunCount + waivedCaseRunCount)).toFixed(2);
-
-    jQ('span#complete_percent').text(completePercent);
-    jQ('div.progress-inner').attr('style', 'width:' + completePercent + '%');
-    jQ('div.progress-failed').attr('style', 'width:' + failedPercent + '%');
-  });
 
   jQ('#btn_clone').bind('click', function() {
     postToURL(jQ(this).data('param'), serializeCaseRunFromInputList('id_table_cases','case_run'));
@@ -305,6 +276,8 @@ function updateExecutionStatus(updateForm, executionId, caseId, executionStatusP
     } else {
       fireEvent(link, 'click');
     }
+
+    // TODO: recalculate progress bar on top of the page
 
     const submitButtons = updateForm.find('.submit_button')
 

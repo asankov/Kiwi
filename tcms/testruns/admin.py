@@ -1,7 +1,7 @@
 # pylint: disable=no-self-use
 from django.contrib import admin, messages
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse, URLResolver
 from django.utils.translation import gettext_lazy as _
 
 from tcms.core.history import ReadOnlyHistoryAdmin

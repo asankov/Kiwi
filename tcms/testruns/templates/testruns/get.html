@@ -82,6 +82,15 @@
     {% include 'include/tags_card.html' with add_perm=perms.testruns.add_testruntag %}
 </div>
 
+<div class="col-xs-12 col-sm-12 col-md-9">
+    <div class="card-pf card-pf-accented">
+        <div class="card-pf-body">
+            <strong>{% trans 'Notes' %}:</strong>
+            {{ object.notes }}
+        </div>
+    </div>
+</div>
+
 <script src="{% static 'typeahead.js/dist/typeahead.jquery.min.js' %}"></script>
 <script src="{% static 'bootstrap-switch/dist/js/bootstrap-switch.min.js' %}"></script>
 

@@ -7,3 +7,5 @@
 .header-test-run {
     white-space: nowrap;
 }
+
+th, td { white-space: nowrap; }

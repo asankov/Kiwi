@@ -98,7 +98,8 @@ function drawTable() {
             data: data.data,
             paging: false,
             ordering: false,
-            dom: "t"
+            dom: "t",
+            scrollX: true,
         });
 
         const cells = $('.table > tbody > tr > td:has(.execution-status)');

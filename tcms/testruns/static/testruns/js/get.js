@@ -11,7 +11,7 @@ $(document).ready(() => {
             jsonRPC('TestRun.update', [testRunId, { 'stop_date': null }], () => { })
         } else {
             let now = new Date().toISOString().replace("T", " ")
-            now = now.slice(0, now.length-5)
+            now = now.slice(0, now.length - 5)
             jsonRPC('TestRun.update', [testRunId, { 'stop_date': now }], () => { })
         }
     });
@@ -20,10 +20,11 @@ $(document).ready(() => {
 
     // bind everything in tags table
     tagsCard('TestRun', testRunId, { run: testRunId }, permRemoveTag);
-    
+
     jsonRPC('TestExecutionStatus.filter', {}, data => {
         executionStatuses = data
         drawPercentBar(testRunId)
+        renderTestExecutions(testRunId)
     })
 })
 
@@ -85,9 +86,48 @@ function renderProgressBars(positiveCount, negativeCount, allCount) {
 
 function renderCountPerStatusList(statusCount) {
     for (var status in statusCount) {
-        const status_id = statusCount[status].id;
+        const statusId = statusCount[status].id;
 
-        $(`#count-for-status-${status_id}`).attr('href', `?status_id=${status_id}`);
-        $(`#count-for-status-${status_id}`).text(statusCount[status].count);
+        $(`#count-for-status-${statusId}`).attr('href', `?status_id=${statusId}`).text(statusCount[status].count);
     }
 }
+
+function renderTestExecutions(testRunId) {
+    const container = $('#test-executions-container')
+    const testExecutionRowTemplate = $('#test-execution-row')[0].content
+
+    jsonRPC('TestExecution.filter', { 'run_id': testRunId }, testExecutions => {
+        testExecutions.forEach(testExecution => {
+            jsonRPC('TestCase.filter', { 'id': testExecution.case_id }, testCases => {
+                jsonRPC('TestExecutionStatus.filter', { 'id': testExecution.status_id }, statuses => {
+                    jsonRPC('Bug.filter', {'execution_id': testExecution.pk}, bugs => {
+                        const template = $(testExecutionRowTemplate.cloneNode(true))
+                        container.append(renderTestExecutionRow(template, testExecution, testCases[0], statuses[0], bugs))
+
+                        treeViewBind();
+                    })
+                })
+            })
+        })
+
+    })
+
+}
+
+function renderTestExecutionRow(template, testExecution, testCase, testExecutionStatus, bugs) {
+    template.find('.test-execution-info').html(`TE-${testExecution.id} <a href="/case/${testExecution.case_id}">TC-${testExecution.case_id} ${testExecution.case}</a>`)
+    template.find('.test-execution-tester').html(renderProfile(testExecution.tested_by))
+    template.find('.test-execution-asignee').html(renderProfile(testExecution.assignee))
+
+    const automatedIcon = testCase.is_automated ? 'fa-thumbs-up' : 'fa-cog'
+    template.find('.test-execution-automated').addClass(automatedIcon)
+    template.find('.test-execution-priority').html(testCase.priority)
+    template.find('.test-execution-category').html(testCase.category)
+    template.find('.test-execution-status-icon').addClass(testExecutionStatus.icon).css('color', testExecutionStatus.color)
+    template.find('.test-execution-status-name').html(testExecutionStatus.name).css('color', testExecutionStatus.color)
+    template.find('.test-execution-bugs-count').html(bugs.length)
+
+    return template
+}
+
+const renderProfile = user => user ? `<a href="/accounts/${user}/profile">${user}</a>` : '-'

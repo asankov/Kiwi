@@ -57,7 +57,7 @@
                 <h2 class="card-pf-title" style="text-align: left">
                     <span class="fa fa-spinner"></span>{% trans 'Status' %}:
                     <input class="bootstrap-switch" id="status_button" type="checkbox"
-                        {% if not object.stop_date %}checked{% endif %} 
+                        {% if not object.stop_date %}checked{% endif %}
                         {% if not perms.testruns.change_testrun %}disabled{% endif %}>
                 </h2>
 
@@ -115,6 +115,18 @@
                 <h2 class="card-pf-title">
                     {% trans 'Test executions' %}
                 </h2>
+                <div class="card-pf-view">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-lg">Add case</button>
+                        <button type="button" class="btn btn-primary btn-lg">Remove case</button>
+                        <button type="button" class="btn btn-primary btn-lg">Update case text</button>
+                        <button type="button" class="btn btn-primary btn-lg">Change assignee</button>
+                    </div>
+                    {% comment %} TODO: dropdown or modal - https://www.patternfly.org/v3/pattern-library/widgets/#modal {% endcomment %}
+                    <button type="submit" class="btn btn-primary btn-lg">{% trans "Change status" %}</button>
+                    <button type="submit" class="btn btn-primary btn-lg">{% trans "Add comment" %}</button>
+                    <button type="submit" class="btn btn-primary btn-lg">{% trans "Add hyperlink" %}</button>
+                </div>
                 <div class="card-pf-body">
                     <div id="test-executions-container" class="list-group tree-list-view-pf"></div>
                 </div>

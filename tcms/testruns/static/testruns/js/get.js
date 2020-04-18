@@ -16,6 +16,9 @@ $(document).ready(() => {
         }
     });
 
+    $('.add-comment-btn').on('click', ensureExecutionsAreSelected)
+    $('.submit-comment-btn').on('click', postComment)
+
     const permRemoveTag = $('#test_run_pk').data('perm-remove-tag') === 'True';
 
     // bind everything in tags table
@@ -126,8 +129,34 @@ function renderTestExecutionRow(template, testExecution, testCase, testExecution
     template.find('.test-execution-status-icon').addClass(testExecutionStatus.icon).css('color', testExecutionStatus.color)
     template.find('.test-execution-status-name').html(testExecutionStatus.name).css('color', testExecutionStatus.color)
     template.find('.test-execution-bugs-count').html(bugs.length)
+    template.find('.test-execution-select-checkbox').data('execution-id', testExecution.id)
 
     return template
 }
 
 const renderProfile = user => user ? `<a href="/accounts/${user}/profile">${user}</a>` : '-'
+
+function ensureExecutionsAreSelected() {
+    const selectedExecutions = $('.test-execution-select-checkbox:checked')
+    if (selectedExecutions.length === 0) {
+        // TODO: this may be yet another modal
+        alert('Select at least one test execution')
+        return false
+    }
+    return true
+}
+
+function postComment() {
+    const comment = $('#comment-box').val()
+    if (!comment) {
+        return
+    }
+
+    const selectedExecutions = $('.test-execution-select-checkbox:checked')
+    selectedExecutions.each((_index, execution) => {
+        const executionId = $(execution).data('execution-id')
+        console.log(executionId)
+
+        // TODO: make a jsonRPC call to add comment
+    })
+}

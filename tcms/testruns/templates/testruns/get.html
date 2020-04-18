@@ -124,7 +124,7 @@
                     </div>
                     {% comment %} TODO: dropdown or modal - https://www.patternfly.org/v3/pattern-library/widgets/#modal {% endcomment %}
                     <button type="submit" class="btn btn-primary btn-lg">{% trans "Change status" %}</button>
-                    <button type="submit" class="btn btn-primary btn-lg">{% trans "Add comment" %}</button>
+                    <button type="submit" class="btn btn-primary btn-lg add-comment-btn" data-toggle="modal" data-target="#add-comment-modal">{% trans "Add comment" %}</button>
                     <button type="submit" class="btn btn-primary btn-lg">{% trans "Add hyperlink" %}</button>
                 </div>
                 <div class="card-pf-body">
@@ -147,6 +147,9 @@
             <div class="list-view-pf-main-info">
                 <div class="list-view-pf-left">
                     <span class="fa fa-angle-right"></span>
+                </div>
+                <div class="list-view-pf-checkbox" style="margin-top: 0; margin-bottom: 0">
+                    <input type="checkbox" class="test-execution-select-checkbox">
                 </div>
                 <div class="list-view-pf-body">
                     <div class="list-view-pf-description">
@@ -191,6 +194,33 @@
         </div>
     </div>
 </template>
+
+<div class="modal fade" id="add-comment-modal" tabindex="-1" role="dialog" aria-labelledby="add-comment-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title" id="add-comment-modal-label">Add comment to test executions</h4>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="comment-box">Comment</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" id="comment-box" class="form-control" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary submit-comment-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
 
 
 <script src="{% static 'typeahead.js/dist/typeahead.jquery.min.js' %}"></script>

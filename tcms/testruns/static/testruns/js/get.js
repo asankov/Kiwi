@@ -120,6 +120,8 @@ function renderAdditionalInformation(testExecutions, testExecutionCaseIds) {
             const listGroupItem = $(`.test-execution-${testExecution.id}`)
             listGroupItem.find('.test-execution-priority').html(testCase.priority)
             listGroupItem.find('.test-execution-category').html(testCase.category)
+            listGroupItem.find('.test-execution-text').html(testCase.text)
+            listGroupItem.find('.test-execution-notes').append(testCase.notes)
 
             const isAutomatedElement = listGroupItem.find('.test-execution-automated')
             const isAutomatedIcon = testCase.is_automated ? 'fa-cog' : 'fa-thumbs-up'
@@ -127,8 +129,15 @@ function renderAdditionalInformation(testExecutions, testExecutionCaseIds) {
             isAutomatedElement.addClass(isAutomatedIcon)
             isAutomatedElement.attr('title', isAutomatedAttr)
 
-            jsonRPC('TestExecution.get_links', { 'execution_id': testExecution.id, 'is_defect': true }, bugs => {
-                listGroupItem.find('.test-execution-bugs-count').html(bugs.length)
+            jsonRPC('TestExecution.get_links', { 'execution_id': testExecution.id }, links => {
+                const bugCount = links.filter(link => link.is_defect).length;
+                listGroupItem.find('.test-execution-bugs-count').html(bugCount)
+
+                const ul = listGroupItem.find('.test-execution-hyperlinks')
+                links.forEach(link => {
+                    const icon = link.is_defect ? `<span class="fa fa-bug"></span>` : ''
+                    ul.append(`<li>${icon} <a href="${link.url}">${link.name || link.url}</a></li>`)
+                })
             })
         })
     })

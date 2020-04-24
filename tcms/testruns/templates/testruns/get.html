@@ -156,7 +156,6 @@
                                                     </div>
                                                     <div title="{% trans 'Bugs' %}" class="list-view-pf-additional-info-item">
                                                         <span class="fa fa-bug"></span>
-                                                        {% comment %} TODO fetch bugs {% endcomment %}
                                                         <span class="test-execution-bugs-count"></span>
                                                     </div>
                                                 </div>
@@ -171,7 +170,22 @@
                                     </div>
                                 </div>
                                 <div class="list-group-item-container container-fluid hidden">
-                                    {% comment %} TODO: exandable content goes here {% endcomment %}
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="test-execution-text-container markdown-text">
+                                                <p class="test-execution-text"></p>
+                                                <p class="test-execution-notes">
+                                                    <strong>{% trans 'Notes' %}:</strong>
+                                                </p>
+                                                <strong>{% trans "Bugs and hyperlinks" %}:</strong>
+                                                <div>
+                                                    <ul class="test-execution-hyperlinks">
+    
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </template>

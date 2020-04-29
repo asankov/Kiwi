@@ -133,6 +133,21 @@ function renderAdditionalInformation(testExecutions, testExecutionCaseIds) {
                 const bugCount = links.filter(link => link.is_defect).length;
                 listGroupItem.find('.test-execution-bugs-count').html(bugCount)
 
+                listGroupItem.find('.add-link-button').on('click', () => {
+
+                    // this handler must be here, because if we bind it when the page is loaded.
+                    // we have no way of knowing for what execution ID the form is submitted for.
+                    $('.add-hyperlink-form').submit(event => {
+                        console.log(event);
+                        console.log('saved')
+                        console.log(testExecution.id);
+
+                        return false;
+                    })
+
+                    return true; // so that the modal is opened
+                })
+
                 const ul = listGroupItem.find('.test-execution-hyperlinks')
                 links.forEach(link => {
                     const icon = link.is_defect ? `<span class="fa fa-bug"></span>` : ''

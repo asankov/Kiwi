@@ -126,7 +126,7 @@ function renderAdditionalInformation(testExecutions, testExecutionCaseIds) {
             const isAutomatedAttr = testCase.is_automated ? isAutomatedElement.data('automated') : isAutomatedElement.data('manual')
             isAutomatedElement.addClass(isAutomatedIcon)
             isAutomatedElement.attr('title', isAutomatedAttr)
-
+// test
             jsonRPC('TestExecution.get_links', { 'execution_id': testExecution.id, 'is_defect': true }, bugs => {
                 listGroupItem.find('.test-execution-bugs-count').html(bugs.length)
             })

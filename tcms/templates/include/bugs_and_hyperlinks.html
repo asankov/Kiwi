@@ -1,0 +1,29 @@
+{% load i18n %}
+{% load static %}
+
+<div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="card-pf card-pf-accented">
+        <h2 class="card-pf-title">
+            {% if show_hyperlinks %}
+                {% trans 'Bugs and Hyperlinks' %}
+            {% else %}
+                <span class="fa fa-bug"></span>
+                {% trans 'Bugs' %}
+            {% endif %}
+        </h2>
+
+        <div class="card-pf-body">
+            <table class="table bugs_and_hyperlinks" data-show-hyperlinks="{% if show_hyperlinks %}true{% else %}false{% endif %}">
+                <thead>
+                    <tr>
+                        {% if show_hyperlinks %}
+                            <th colspan="2">{% trans 'URL' %}</th>
+                        {%else%}
+                            <th colspan="2">{% trans 'Bug URL' %}</th>
+                        {%endif%}
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>

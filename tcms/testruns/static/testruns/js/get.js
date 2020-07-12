@@ -20,6 +20,8 @@ $(document).ready(() => {
         }
     });
 
+    $('#btn-change-assignee').on('click', changeExecutionAssignee)
+
     const permRemoveTag = $('#test_run_pk').data('perm-remove-tag') === 'True';
 
     // bind everything in tags table
@@ -140,6 +142,7 @@ function renderAdditionalInformation(testExecutions, testExecutionCaseIds) {
 }
 
 function renderTestExecutionRow(template, testExecution, testExecutionStatus) {
+    template.find('input[type=checkbox]').data('test-execution-id', testExecution.id)
     template.find('.list-group-item').addClass(`test-execution-${testExecution.id}`)
     template.find('.test-execution-info').html(`TE-${testExecution.id}`)
     template.find('.test-execution-info-link').html(testExecution.case)
@@ -158,7 +161,7 @@ function renderTestExecutionRow(template, testExecution, testExecutionStatus) {
 /////// and need updates before they can be used again
 ///////
 function changeExecutionAssignee() {
-    const executions = 0 // todo: this is the list of all selected executions
+    const executions = getCheckedExecutions()
     if (!executions.length) {
         window.alert(default_messages.alert.no_case_selected);
         return false;
@@ -209,4 +212,11 @@ function fileBugFromExecution(run_id, title_container, container, case_id, execu
     });
 
     dialog.show();
+}
+
+function getCheckedExecutions() {
+    const result = []
+    const checkedExecutions = $('.test-executions-table input:checked')
+    checkedExecutions.each((_key, value) => result.push($(value).data('test-execution-id')))
+    return result
 }

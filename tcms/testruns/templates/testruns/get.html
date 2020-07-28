@@ -156,6 +156,7 @@
                                         <button type="button" class="btn btn-default dropdown-toggle" id="filter-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans "Change status" %} <span class="caret"></span></button>
                                         <ul class="dropdown-menu">
                                             {% for status in execution_statuses %}
+                                                {% comment %} TODO: attach a handler than returns false, so that it does no go to the top of the page {% endcomment %}
                                                 <li><a href="#">{{ status.name }}</a></li>
                                             {% endfor %}
                                         </ul>

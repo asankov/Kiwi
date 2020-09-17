@@ -186,6 +186,29 @@ function renderTestExecutions(testExecutions) {
 function renderAdditionalInformation(testExecutions, testExecutionCaseIds) {
     $('.test-executions-count').html(testExecutions.length);
 
+    testExecutions.forEach(testExecution => {
+        const testExecutionRow = $(`.test-execution-${testExecution.id}`)
+        const commentsRow = testExecutionRow.find('.comments')
+
+        jsonRPC('TestExecution.get_comments', [testExecution.id], comments => {
+            comments.forEach(comment => commentsRow.append(renderComment(comment)))
+        })
+
+        testExecutionRow.find('.cancel-comment').click(() => testExecutionRow.find('#comment-text').val(''))
+        testExecutionRow.find('.post-comment').click(() => {
+            const commentField = testExecutionRow.find('#comment-text')
+            const input = commentField.val().trim()
+
+            if (input) {
+                jsonRPC('TestExecution.add_comment', [testExecution.id, input], () => {
+                    commentField.val('')
+                    // TODO: add comment to `commentsRow` in some way
+                })
+            }
+        })
+
+    })
+
     renderTestCaseInformation(testExecutions, testExecutionCaseIds)
 }
 

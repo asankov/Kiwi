@@ -310,9 +310,16 @@
                                                     <button class="btn btn-primary post-comment">{% trans "Post" %}</button>
                                                 </div>
                                                 <div class="comments">
-                                                    <template id="comment">
-                                                        <span class="user" style="font-weight: bold"></span>
-                                                        <span class="comment_text"> </span>
+                                                    <template id="comment-template">
+                                                        <div>
+                                                            {% comment %} TODO: css {% endcomment %}
+                                                            <div style="display: flex; justify-content: space-between;">
+                                                                <div class="user" style="font-weight: bold"></div>
+                                                                <div class="date" style="color: gray"></div>
+                                                            </div>
+                                                            <div class="comment"></div>
+                                                            {% comment %} TODO: kebap button {% endcomment %}
+                                                        </div>
                                                     </template>
                                                 </div>
                                             </div>

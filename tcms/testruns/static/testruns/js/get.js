@@ -194,22 +194,32 @@ function renderAdditionalInformation(testExecutions, testExecutionCaseIds) {
             comments.forEach(comment => commentsRow.append(renderComment(comment)))
         })
 
-        testExecutionRow.find('.cancel-comment').click(() => testExecutionRow.find('#comment-text').val(''))
+        const commentField = testExecutionRow.find('#comment-text')
+        testExecutionRow.find('.cancel-comment').click(() => commentField.val(''))
         testExecutionRow.find('.post-comment').click(() => {
-            const commentField = testExecutionRow.find('#comment-text')
             const input = commentField.val().trim()
 
             if (input) {
-                jsonRPC('TestExecution.add_comment', [testExecution.id, input], () => {
+                jsonRPC('TestExecution.add_comment', [testExecution.id, input], comment => {
                     commentField.val('')
-                    // TODO: add comment to `commentsRow` in some way
+                    commentsRow.append(renderComment(comment))
                 })
             }
         })
-
     })
 
     renderTestCaseInformation(testExecutions, testExecutionCaseIds)
+}
+
+function renderComment(comment) {
+    const template = $($('#comment-template')[0].content.cloneNode(true))
+
+    template.find('.user').html(comment.user_name)
+    template.find('.comment').html(comment.comment)
+    // TODO: to human readable
+    template.find('.date').html(comment.submit_date)
+
+    return template
 }
 
 function renderTestCaseInformation(testExecutions, testExecutionCaseIds) {

@@ -214,10 +214,19 @@ function renderAdditionalInformation(testExecutions, testExecutionCaseIds) {
 function renderComment(comment) {
     const template = $($('#comment-template')[0].content.cloneNode(true))
 
+    template.find('.comment-box').addClass(`comment-${comment.id}`)
     template.find('.user').html(comment.user_name)
     template.find('.comment').html(comment.comment)
     // TODO: to human readable
     template.find('.date').html(comment.submit_date)
+
+    template.find('.delete-comment-button').click(() => {
+        jsonRPC('TestExecution.remove_comment', [comment.object_pk, comment.id], () => {
+            $(`.comment-${comment.id}`).remove()
+        })
+
+        return false
+    })
 
     return template
 }

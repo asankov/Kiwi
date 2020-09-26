@@ -1,3 +1,4 @@
+let testExecutions = new Map();
 let testExecutionStatuses = {}
 
 $(document).ready(() => {
@@ -67,9 +68,12 @@ $(document).ready(() => {
     jsonRPC('TestExecutionStatus.filter', {}, executionStatuses => {
         testExecutionStatuses = executionStatuses
 
-        jsonRPC('TestExecution.filter', { 'run_id': testRunId }, testExecutions => {
-            drawPercentBar(testExecutions, executionStatuses)
-            renderTestExecutions(testExecutions)
+        jsonRPC('TestExecution.filter', { 'run_id': testRunId }, executions => {
+            executions.forEach(te => testExecutions.set(te.id, te))
+            console.log(testExecutions)
+
+            drawPercentBar(executions, executionStatuses)
+            renderTestExecutions(executions)
         })
     })
 
@@ -247,6 +251,7 @@ function renderTestExecutionRow(testExecution) {
 
     template.find('.test-execution-checkbox').data('test-execution-id', testExecution.id)
     template.find('.test-execution-checkbox').data('test-execution-case-id', testExecution.case_id)
+    template.find('.test-execution-element').data('test-execution-id', testExecution.id)
     template.find('.test-execution-element').addClass(`test-execution-${testExecution.id}`)
     template.find('.test-execution-element').addClass(`test-execution-case-${testExecution.case_id}`)
     template.find('.test-execution-info').html(`TE-${testExecution.id}`)
@@ -425,11 +430,12 @@ function renderLink(link) {
 function removeCases(testRunId, testCaseIds) {
     for (const testCaseId of testCaseIds) {
         jsonRPC('TestRun.remove_case', [testRunId, testCaseId], () => {
-            $(`.test-execution-case-${testCaseId}`).remove()
+            const testExecutionRow = $(`.test-execution-case-${testCaseId}`)
+            const testExecutionId = testExecutionRow.data('test-execution-id')
+            testExecutionRow.remove()
 
-            const testExecutionCountEl = $('.test-executions-count')
-            const count = parseInt(testExecutionCountEl[0].innerText)
-            testExecutionCountEl.html(count - 1)
+            testExecutions.delete(testExecutionId)
+            $('.test-executions-count').html(testExecutions.size)
         }, true);
     }
 }

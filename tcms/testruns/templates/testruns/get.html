@@ -9,6 +9,19 @@
 
 {% block contents %}
 
+{% block head %}
+
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'simplemde/dist/simplemde.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'prismjs/themes/prism.css' %}"/>
+
+<script src="{% static 'simplemde/dist/simplemde.min.js' %}"></script>
+<script src="{% static 'marked/marked.min.js' %}"></script>
+<script src="{% static 'prismjs/prism.js' %}"></script>
+<script src="{% static 'prismjs/plugins/autoloader/prism-autoloader.min.js' %}"></script>
+<script src="{% static 'js/simplemde_security_override.js' %}"></script> {% endcomment %}
+
+{% endblock %}
+
 <div class="container-cards-pf">
     <!-- Important:  if you need to nest additional .row within a .row.row-cards-pf, do *not* use .row-cards-pf on the nested .row  -->
     <h1 class="col-md-12" style="margin-top: 0">
@@ -304,7 +317,7 @@
                                         <div class="col-md-3">
                                             <div>
                                                 <h4> {% trans "Comments "%} </h4>
-                                                <input type="text" id="comment-text" name="comment" class="form-control">
+                                                <textarea type="text" class="comment-text" name="comment" class="form-control"/>
                                                 <div class="form-group" style="padding: 15px; text-align: right;">
                                                     <button class="btn btn-default cancel-comment">{% trans "Cancel" %}</button>
                                                     <button class="btn btn-primary post-comment">{% trans "Post" %}</button>
@@ -421,6 +434,8 @@
     </div>
   </div>
 </div>
+
+<textarea id="simple-mde"></textarea>
 
 <script src="{% static 'typeahead.js/dist/typeahead.jquery.min.js' %}"></script>
 <script src="{% static 'bootstrap-switch/dist/js/bootstrap-switch.min.js' %}"></script>

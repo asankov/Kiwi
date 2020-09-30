@@ -79,6 +79,10 @@ $(document).ready(() => {
 
         testExecutionSelectors.each((_index, te) => { te.checked = isChecked });
     });
+
+    // var simplemde = initSimpleMDE(document.getElementById("simple-mde"))
+
+    // console.log(simplemde)
 })
 
 function selectedCheckboxes() {
@@ -296,6 +300,8 @@ function renderTestExecutionRow(testExecution) {
     template.find('.test-execution-status-icon').addClass(testExecutionStatus.icon).css('color', testExecutionStatus.color)
     template.find('.test-execution-status-name').html(testExecutionStatus.name).css('color', testExecutionStatus.color)
 
+    const commentBox = template.find('.comment-text')[0]
+    // console.log(initSimpleMDE(commentBox))
     return template
 }
 
@@ -465,4 +471,37 @@ function removeCases(testRunId, testCaseIds) {
             testExecutionCountEl.html(count - 1)
         }, true);
     }
+}
+
+function initSimpleMDE(elem) {
+    return new SimpleMDE({
+        element: elem,
+        autoDownloadFontAwesome: false,
+        renderingConfig: {
+            codeSyntaxHighlighting: true,
+        },
+        toolbar: [
+            "heading", "bold", "italic", "strikethrough", "|",
+            "ordered-list", "unordered-list", "table", "horizontal-rule", "code", "quote", "|",
+            "link",
+            {
+                // todo: standard shortcut is (Ctrl-Alt-I) but I can't find a way
+                // to assign shortcuts to customized buttons
+                name: "image",
+                action: () => {
+                    $('#simplemde-file-upload').click();
+                },
+                className: "fa fa-picture-o",
+                title: "Insert Image",
+            },
+            {
+                name: "file",
+                action: () => {
+                    $('#simplemde-file-upload').click();
+                },
+                className: "fa fa-paperclip",
+                title: "Attach File",
+            },
+            "|", "preview", "side-by-side", "fullscreen", "|", "guide"]
+    });
 }

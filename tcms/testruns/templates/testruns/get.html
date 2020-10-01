@@ -11,14 +11,7 @@
 
 {% block head %}
 
-{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'simplemde/dist/simplemde.min.css' %}"/>
-<link rel="stylesheet" type="text/css" href="{% static 'prismjs/themes/prism.css' %}"/>
 
-<script src="{% static 'simplemde/dist/simplemde.min.js' %}"></script>
-<script src="{% static 'marked/marked.min.js' %}"></script>
-<script src="{% static 'prismjs/prism.js' %}"></script>
-<script src="{% static 'prismjs/plugins/autoloader/prism-autoloader.min.js' %}"></script>
-<script src="{% static 'js/simplemde_security_override.js' %}"></script> {% endcomment %}
 
 {% endblock %}
 
@@ -436,6 +429,15 @@
 </div>
 
 <textarea id="simple-mde"></textarea>
+
+<link rel="stylesheet" type="text/css" href="{% static 'simplemde/dist/simplemde.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'prismjs/themes/prism.css' %}"/>
+
+<script src="{% static 'simplemde/dist/simplemde.min.js' %}"></script>
+<script src="{% static 'marked/marked.min.js' %}"></script>
+<script src="{% static 'prismjs/prism.js' %}"></script>
+<script src="{% static 'prismjs/plugins/autoloader/prism-autoloader.min.js' %}"></script>
+<script src="{% static 'js/simplemde_security_override.js' %}"></script>
 
 <script src="{% static 'typeahead.js/dist/typeahead.jquery.min.js' %}"></script>
 <script src="{% static 'bootstrap-switch/dist/js/bootstrap-switch.min.js' %}"></script>

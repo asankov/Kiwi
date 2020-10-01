@@ -80,9 +80,9 @@ $(document).ready(() => {
         testExecutionSelectors.each((_index, te) => { te.checked = isChecked });
     });
 
-    // var simplemde = initSimpleMDE(document.getElementById("simple-mde"))
+    var simplemde = initSimpleMDE(document.getElementById("simple-mde"))
 
-    // console.log(simplemde)
+    console.log(simplemde)
 })
 
 function selectedCheckboxes() {

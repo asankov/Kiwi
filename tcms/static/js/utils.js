@@ -11,7 +11,7 @@ function updateSelect(data, selector, id_attr, value_attr) {
         new_options = _select_tag.options[0].outerHTML;
     }
 
-    data.forEach(function(element) {
+    data.forEach(function (element) {
         new_options += '<option value="' + element[id_attr] + '">' + element[value_attr] + '</option>';
     });
 
@@ -19,7 +19,7 @@ function updateSelect(data, selector, id_attr, value_attr) {
 
     try {
         $(selector).selectpicker('refresh');
-    } catch(e) {
+    } catch (e) {
         console.warn(e);
     }
 }
@@ -29,13 +29,13 @@ function updateSelect(data, selector, id_attr, value_attr) {
     Used for on-change event handlers
 */
 function update_version_select_from_product() {
-    var updateVersionSelectCallback = function(data) {
+    var updateVersionSelectCallback = function (data) {
         updateSelect(data, '#id_version', 'id', 'value')
     };
 
     var product_id = $('#id_product').val();
     if (product_id) {
-        jsonRPC('Version.filter', {product: product_id}, updateVersionSelectCallback);
+        jsonRPC('Version.filter', { product: product_id }, updateVersionSelectCallback);
     } else {
         updateVersionSelectCallback([]);
     }
@@ -45,7 +45,7 @@ function update_version_select_from_product() {
     Used for on-change event handlers
 */
 function update_build_select_from_product(keep_first) {
-    var updateCallback = function(data) {
+    var updateCallback = function (data) {
         updateSelect(data, '#id_build', 'id', 'name')
     }
 
@@ -57,7 +57,7 @@ function update_build_select_from_product(keep_first) {
 
     var product_id = $('#id_product').val();
     if (product_id) {
-        jsonRPC('Build.filter', {product: product_id}, updateCallback);
+        jsonRPC('Build.filter', { product: product_id }, updateCallback);
     } else {
         updateCallback([]);
     }
@@ -67,13 +67,13 @@ function update_build_select_from_product(keep_first) {
     Used for on-change event handlers
 */
 function update_category_select_from_product() {
-    var updateCallback = function(data) {
+    var updateCallback = function (data) {
         updateSelect(data, '#id_category', 'id', 'name')
     }
 
     var product_id = $('#id_product').val();
     if (product_id) {
-        jsonRPC('Category.filter', {product: product_id}, updateCallback);
+        jsonRPC('Category.filter', { product: product_id }, updateCallback);
     } else {
         updateCallback([]);
     }
@@ -83,13 +83,13 @@ function update_category_select_from_product() {
     Used for on-change event handlers
 */
 function update_component_select_from_product() {
-    var updateCallback = function(data) {
+    var updateCallback = function (data) {
         updateSelect(data, '#id_component', 'id', 'name')
     }
 
     var product_id = $('#id_product').val();
     if (product_id) {
-        jsonRPC('Component.filter', {product: product_id}, updateCallback);
+        jsonRPC('Component.filter', { product: product_id }, updateCallback);
     } else {
         updateCallback([]);
     }
@@ -102,7 +102,7 @@ function update_component_select_from_product() {
 function splitByComma(input) {
     var result = [];
 
-    input.split(',').forEach(function(element) {
+    input.split(',').forEach(function (element) {
         element = element.trim();
         if (element) {
             result.push(element);
@@ -135,25 +135,25 @@ function updateParamsToSearchTags(selector, params) {
     https://github.com/kiwitcms/Kiwi/issues/234
 */
 function escapeHTML(unsafe) {
-  return unsafe.replace(/[&<>"']/g, function(m) {
-    return ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      '\'': '&#039;'
-    })[m]
-  });
+    return unsafe.replace(/[&<>"']/g, function (m) {
+        return ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            '\'': '&#039;'
+        })[m]
+    });
 }
 
 
 function unescapeHTML(html) {
-  return html.
-    replace(/&amp;/g, '&').
-    replace(/&lt;/g,  '<').
-    replace(/&gt;/g,  '>').
-    replace(/&quot;/g, '"').
-    replace(/&#039;/g, '\'');
+    return html.
+        replace(/&amp;/g, '&').
+        replace(/&lt;/g, '<').
+        replace(/&gt;/g, '>').
+        replace(/&quot;/g, '"').
+        replace(/&#039;/g, '\'');
 }
 
 
@@ -164,14 +164,14 @@ function treeViewBind(selector = '.tree-list-view-pf') {
     // unbind previous events b/c this function is now reentrant
     // click the list-view heading then expand a row
     $(selector).find('.list-group-item-header').off("click").click(function (event) {
-      if(!$(event.target).is('button, a, input, .fa-ellipsis-v')) {
-        var $this = $(this);
-        $this.find('.fa-angle-right').toggleClass('fa-angle-down');
-        var $itemContainer = $this.siblings('.list-group-item-container');
-        if ($itemContainer.children().length) {
-          $itemContainer.toggleClass('hidden');
+        if (!$(event.target).is('button, a, input, .fa-ellipsis-v')) {
+            var $this = $(this);
+            $this.find('.fa-angle-right').toggleClass('fa-angle-down');
+            var $itemContainer = $this.siblings('.list-group-item-container');
+            if ($itemContainer.children().length) {
+                $itemContainer.toggleClass('hidden');
+            }
         }
-      }
     });
 }
 
@@ -181,7 +181,7 @@ const currentTimeWithTimezone = timeZone => moment().tz(timeZone).format('YYYY-M
 
 /* render Markdown & assign it to selector */
 function markdown2HTML(input, selector) {
-    jsonRPC('Markdown.render', unescapeHTML(input), function(result) {
+    jsonRPC('Markdown.render', unescapeHTML(input), function (result) {
         $(selector).html(unescapeHTML(result));
     });
 }
@@ -204,9 +204,9 @@ function renderCommentHTML(index, comment, template, bindDeleteFunc) {
 
 function bindDeleteCommentButton(objId, deleteMethod, canDelete, parentNode) {
     if (canDelete) {
-        parentNode.find('.js-comment-delete-btn').click(function(event) {
+        parentNode.find('.js-comment-delete-btn').click(function (event) {
             const commentId = $(event.target).parents('.js-comment-container').data('comment-id')
-            jsonRPC(deleteMethod, [objId, commentId], function(result) {
+            jsonRPC(deleteMethod, [objId, commentId], function (result) {
                 $(event.target).parents('.js-comment-container').hide()
             })
 
@@ -221,7 +221,7 @@ function renderCommentsForObject(objId, getMethod, deleteMethod, canDelete, pare
     const commentTemplate = $('template#comment-template')[0];
 
     jsonRPC(getMethod, [objId], comments => {
-        comments.forEach((comment, index) => parentNode.append(renderCommentHTML(index+1, comment, commentTemplate)))
+        comments.forEach((comment, index) => parentNode.append(renderCommentHTML(index + 1, comment, commentTemplate)))
 
         bindDeleteCommentButton(objId, deleteMethod, canDelete, parentNode)
     })
@@ -256,31 +256,22 @@ function advancedSearchAndAddTestCases(objId, rpcMethod, href, errorMessage) {
 
     let rpcErrors = 0,
         testCaseIDs = [];
-    popupWindow = showPopup(href);
+    const popupWindow = showPopup(href);
 
-    $(popupWindow).on('beforeunload', function(){
+    $(popupWindow).on('beforeunload', function () {
         testCaseIDs = $('#popup-selection').val();
 
         if (testCaseIDs) {
-            // monkey-patch the alert() function
-            const oldAlert = window.alert;
-            alert = window.alert = function(message) {
-                rpcErrors += 1;
-            }
-
             // add the selected test cases
-            testCaseIDs.split(",").forEach(function(testCase) {
-                jsonRPC(rpcMethod, [objId, testCase], function(result) {}, true)
+            testCaseIDs.split(",").forEach(function (testCase) {
+                jsonRPC(rpcMethod, [objId, testCase], () => { }, error => {
+                    rpcErrors += 1
+                })
             })
-
-            // revert monkey-patch
-            alert = window.alert = oldAlert;
         }
     });
 
-    $(popupWindow).on('unload', function(){
-        let message;
-
+    $(popupWindow).on('unload', function () {
         if (rpcErrors) {
             alert(errorMessage);
         }
@@ -305,14 +296,14 @@ function advancedSearchAndAddTestCases(objId, rpcMethod, href, errorMessage) {
 //                for example: filter only CONFIRMED TCs.
 function quickSearchAndAddTestCase(objId, pageCallback, cache, initialQuery = {}) {
     // + button
-    $('#btn-add-case').click(function() {
+    $('#btn-add-case').click(function () {
         pageCallback(objId)
 
         return false
     });
 
     // Enter key
-    $('#search-testcase').keyup(function(event) {
+    $('#search-testcase').keyup(function (event) {
         if (event.keyCode === 13) {
             pageCallback(objId)
 
@@ -324,29 +315,29 @@ function quickSearchAndAddTestCase(objId, pageCallback, cache, initialQuery = {}
     $('#search-testcase.typeahead').typeahead({
         minLength: 1,
         highlight: true
-        }, {
+    }, {
         name: 'testcases-autocomplete',
         // will display up to X results even if more were returned
         limit: 100,
         async: true,
-        display: function(element) {
+        display: function (element) {
             const displayName = `TC-${element.id}: ${element.summary}`;
             cache[displayName] = element;
             return displayName;
         },
-        source: function(query, processSync, processAsync) {
+        source: function (query, processSync, processAsync) {
             // accepts "TC-1234" or "tc-1234" or "1234"
             query = query.toLowerCase().replace('tc-', '');
             if (query === '') {
                 return;
             }
 
-            var rpc_query = {pk: query};
+            var rpc_query = { pk: query };
 
             // or arbitrary string
             if (isNaN(query)) {
-                if (query.length >=3) {
-                    rpc_query = {summary__icontains: query};
+                if (query.length >= 3) {
+                    rpc_query = { summary__icontains: query };
                 } else {
                     return;
                 }
@@ -355,7 +346,7 @@ function quickSearchAndAddTestCase(objId, pageCallback, cache, initialQuery = {}
             // merge initial query for more filtering if specified
             rpc_query = Object.assign({}, rpc_query, initialQuery)
 
-            jsonRPC('TestCase.filter', rpc_query, function(data) {
+            jsonRPC('TestCase.filter', rpc_query, function (data) {
                 return processAsync(data);
             });
         }
@@ -367,7 +358,7 @@ function changeDropdownSelectedItem(dropDownSelector, buttonSelector, target, fo
     $(`${buttonSelector}`)[0].innerHTML = target.innerText + '<span class="caret"></span>';
 
     //remove selected class
-    $(`${dropDownSelector} li`).each(function(index, el) {
+    $(`${dropDownSelector} li`).each(function (index, el) {
         el.className = '';
     });
 
